@@ -11,7 +11,9 @@ def index():
         date = request.form['date']
         currencies_list = currencies.split(',')
 
-        api_url = f'https://api.currencyapi.com/v3/historical?apikey=cur_live_hRcnLqKOs4Ut9wH4NoyoMxhIKZnGsVwGYi4603JS&currencies={",".join(currencies_list)}&base_currency={base_currency}&date={date}'
+        # Hardcoded API key for testing purposes
+        api_key = 'cur_live_hRcnLqKOs4Ut9wH4NoyoMxhIKZnGsVwGYi4603JS'
+        api_url = f'https://api.currencyapi.com/v3/historical?apikey={api_key}&currencies={",".join(currencies_list)}&base_currency={base_currency}&date={date}'
 
         response = requests.get(api_url)
         if response.status_code == 200:
