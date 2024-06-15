@@ -1,0 +1,61 @@
+import requests
+import datetime
+
+def get_exchange_rates(api_key, from_currency, to_currency, start_date, end_date):
+    url = f"http://api.currencylayer.com/timeframe"
+    
+    params = {
+        'access_key': api_key,
+        'start_date': start_date,
+        'end_date': end_date,
+        'currencies': to_currency,
+        'source': from_currency,
+        'format': 1
+    }
+    
+    response = requests.get(url, params=params)
+    
+    if response.status_code == 200:
+        data = response.json()
+        if data['success']:
+            return data['quotes']
+        else:
+            print("Error in API response:", data['error']['info'])
+    else:
+        print("Failed to fetch data:", response.status_code)
+    
+    return None
+
+def calculate_average_rate(exchange_rates):
+    total_rate = 0
+    count = 0
+    
+    for date, rate in exchange_rates.items():
+        total_rate += rate
+        count += 1
+    
+    if count == 0:
+        return None
+    
+    return total_rate / count
+
+def main():
+    api_key = 'YOUR_API_KEY'  # Replace with your CurrencyLayer API key
+    from_currency = 'USD'
+    to_currency = 'EUR'
+    start_date = '2023-01-01'
+    end_date = '2023-01-10'
+    
+    exchange_rates = get_exchange_rates(api_key, from_currency, to_currency, start_date, end_date)
+    
+    if exchange_rates:
+        average_rate = calculate_average_rate(exchange_rates)
+        if average_rate:
+            print(f"The average exchange rate from {from_currency} to {to_currency} from {start_date} to {end_date} is {average_rate:.4f}")
+        else:
+            print("No exchange rates found for the specified date range.")
+    else:
+        print("Failed to fetch exchange rates.")
+
+if __name__ == "__main__":
+    main()
