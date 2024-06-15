@@ -7,13 +7,11 @@ app = Flask(__name__)
 def index():
     if request.method == 'POST':
         base_currency = request.form['base_currency']
-        currencies = request.form['currencies']
+        currencies = request.form.getlist('currencies')
         date = request.form['date']
-        currencies_list = currencies.split(',')
-
-        # Hardcoded API key for testing purposes
+        
         api_key = 'cur_live_hRcnLqKOs4Ut9wH4NoyoMxhIKZnGsVwGYi4603JS'
-        api_url = f'https://api.currencyapi.com/v3/historical?apikey={api_key}&currencies={",".join(currencies_list)}&base_currency={base_currency}&date={date}'
+        api_url = f'https://api.currencyapi.com/v3/historical?apikey={api_key}&currencies={",".join(currencies)}&base_currency={base_currency}&date={date}'
 
         response = requests.get(api_url)
         if response.status_code == 200:
