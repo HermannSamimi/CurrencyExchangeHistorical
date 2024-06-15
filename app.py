@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        base_currency = request.form['base_currency']
+        base_currency = 'EUR'  # Fixed base currency
         currencies = request.form.getlist('currencies')
         date = request.form['date']
         
