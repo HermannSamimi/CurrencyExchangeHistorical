@@ -7,16 +7,17 @@ app = Flask(__name__)
 def index():
     if request.method == 'POST':
         base_currency = 'EUR'  # Fixed base currency
-        currencies = request.form.getlist('currencies')
+        target_currency = request.form['currency']
         date = request.form['date']
         
         api_key = 'cur_live_hRcnLqKOs4Ut9wH4NoyoMxhIKZnGsVwGYi4603JS'
-        api_url = f'https://api.currencyapi.com/v3/historical?apikey={api_key}&currencies={",".join(currencies)}&base_currency={base_currency}&date={date}'
+        api_url = f'https://api.currencyapi.com/v3/historical?apikey={api_key}&currencies={target_currency}&base_currency={base_currency}&date={date}'
 
         response = requests.get(api_url)
         if response.status_code == 200:
             data = response.json()
-            return render_template('index.html', data=data)
+            rate = data['data'][target_currency]['value']
+            return render_template('index.html', target_currency=target_currency, date=date, rate=rate)
         else:
             error_message = f"Failed to retrieve data: {response.status_code}"
             return render_template('index.html', error=error_message)

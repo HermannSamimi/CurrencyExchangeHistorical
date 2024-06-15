@@ -61,8 +61,8 @@
           <label>Base Currency: EUR</label>
         </div>
         <div class="form-group">
-          <label for="currencies">Target Currencies:</label>
-          <select id="currencies" name="currencies" required multiple>
+          <label for="currency">Target Currency:</label>
+          <select id="currency" name="currency" required>
             <option value="USD">USD - United States Dollar</option>
             <option value="GBP">GBP - British Pound</option>
             <option value="JPY">JPY - Japanese Yen</option>
@@ -78,8 +78,10 @@
       </form>
       {% if data %}
         <div class="result">
-          <h2>Exchange Rates:</h2>
-          <pre>{{ data | tojson(indent=2) }}</pre>
+          <h2>Exchange Rate</h2>
+          <p>EUR ---> {{ target_currency }}</p>
+          <p>Date: {{ date }}</p>
+          <p>Rate: {{ rate }}</p>
         </div>
       {% elif error %}
         <div class="error">{{ error }}</div>
