@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        base_currency = 'EUR'  # Fixed base currency
+        base_currency = request.form['base_currency']
         target_currency = request.form['currency']
         date = request.form['date']
         
@@ -17,7 +17,7 @@ def index():
         if response.status_code == 200:
             data = response.json()
             rate = data['data'][target_currency]['value']
-            return render_template('index.html', target_currency=target_currency, date=date, rate=rate)
+            return render_template('index.html', base_currency=base_currency, target_currency=target_currency, date=date, rate=rate)
         else:
             error_message = f"Failed to retrieve data: {response.status_code}"
             return render_template('index.html', error=error_message)
